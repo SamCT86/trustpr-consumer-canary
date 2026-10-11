@@ -43,3 +43,5 @@ The caller workflow uploads the receipt, summary, event identities, public files
 metadata, and verification result for seven days. This uploader is a consumer
 evidence step, not part of the TrustPR product. Actual run links, artifact bytes,
 and provider readback are required before claiming either case passed.
+
+Same-repository canary: one README change exercises the immutable public Action.

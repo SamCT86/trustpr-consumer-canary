@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Generate public TrustPR receipt
         id: trustpr
-        uses: SamCT86/trustpr-action@3ac08375bed6380285fcfd8019cef0cb7931dda8
+        uses: SamCT86/trustpr-action@95d913eccbce6ccb547c293deaa8711272148e93
         with:
           repository: ${{ github.repository }}
           pull-request-number: ${{ github.event.pull_request.number }}
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           repository: SamCT86/trustpr-action
-          ref: 3ac08375bed6380285fcfd8019cef0cb7931dda8
+          ref: 95d913eccbce6ccb547c293deaa8711272148e93
           path: trusted-action
           persist-credentials: false
           fetch-depth: 1
@@ -54,7 +54,7 @@ jobs:
           import {execFile} from 'node:child_process';
           import {promisify} from 'node:util';
           const fail = code => { throw new Error(code); };
-          const actionSha = '3ac08375bed6380285fcfd8019cef0cb7931dda8';
+          const actionSha = '95d913eccbce6ccb547c293deaa8711272148e93';
           const repository = 'SamCT86/trustpr-consumer-canary';
           const trusted = path.join(process.env.GITHUB_WORKSPACE, 'trusted-action');
           const {stdout} = await promisify(execFile)('/usr/bin/git', ['-C', trusted, 'rev-parse', 'HEAD'],
@@ -85,7 +85,7 @@ jobs:
           const kind = actor === 'dependabot[bot]' && pr.user?.login === 'dependabot[bot]'
             ? 'dependabot' : actor === 'SamCT86' && pr.user?.login === 'SamCT86' ? 'same-repository' : null;
           if (!kind) fail('CANARY_ACTOR_INVALID');
-          const expectedPaths = kind === 'dependabot' ? ['package-lock.json', 'package.json'] : ['README.md'];
+          const expectedPaths = kind === 'dependabot' ? ['package-lock.json', 'package.json'] : ['.github/workflows/trustpr.yml'];
           if (pr.changed_files !== expectedPaths.length) fail('EVENT_CHANGED_FILE_COUNT_INVALID');
           const identity = {
             schema: 'trustpr-public-consumer-event-v1', event_name: process.env.GITHUB_EVENT_NAME,

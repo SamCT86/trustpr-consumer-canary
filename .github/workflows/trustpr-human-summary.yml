@@ -1,4 +1,4 @@
-# First-party, read-only acceptance of the post-v0.1.1 human Step Summary source.
+# First-party, read-only acceptance of the v0.1.2 human Step Summary source candidate.
 # This is NOT a v0.1.2 release, independent adoption, or permission to merge.
 name: TrustPR human summary canary
 on:
@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Collect PR facts (source candidate, not released v0.1.2)
         id: receipt
-        uses: SamCT86/trustpr-action@346e98c94318414c62ed2774df5e80014361cf47
+        uses: SamCT86/trustpr-action@7ee27751ea5568623d03a1359ef29811cf45607c
         with:
           repository: ${{ github.repository }}
           pull-request-number: ${{ github.event.pull_request.number }}

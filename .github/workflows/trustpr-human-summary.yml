@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Collect PR facts (source candidate, not released v0.1.2)
         id: receipt
-        uses: SamCT86/trustpr-action@7ee27751ea5568623d03a1359ef29811cf45607c
+        uses: SamCT86/trustpr-action@a37fa88a23e41139d6fed796827a1ebf4a9a5321
         with:
           repository: ${{ github.repository }}
           pull-request-number: ${{ github.event.pull_request.number }}

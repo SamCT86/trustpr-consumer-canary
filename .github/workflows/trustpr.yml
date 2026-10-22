@@ -1,4 +1,5 @@
 name: Public TrustPR consumer canary
+# Branch-only v0.1.2 candidate acceptance; source pin is not a released tag.
 
 on:
   pull_request:
@@ -17,7 +18,7 @@ jobs:
     steps:
       - name: Generate public TrustPR receipt
         id: trustpr
-        uses: SamCT86/trustpr-action@3ac08375bed6380285fcfd8019cef0cb7931dda8
+        uses: SamCT86/trustpr-action@a37fa88a23e41139d6fed796827a1ebf4a9a5321
         with:
           repository: ${{ github.repository }}
           pull-request-number: ${{ github.event.pull_request.number }}
@@ -29,7 +30,7 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           repository: SamCT86/trustpr-action
-          ref: 3ac08375bed6380285fcfd8019cef0cb7931dda8
+          ref: a37fa88a23e41139d6fed796827a1ebf4a9a5321
           path: trusted-action
           persist-credentials: false
           fetch-depth: 1
@@ -54,7 +55,7 @@ jobs:
           import {execFile} from 'node:child_process';
           import {promisify} from 'node:util';
           const fail = code => { throw new Error(code); };
-          const actionSha = '3ac08375bed6380285fcfd8019cef0cb7931dda8';
+          const actionSha = 'a37fa88a23e41139d6fed796827a1ebf4a9a5321';
           const repository = 'SamCT86/trustpr-consumer-canary';
           const trusted = path.join(process.env.GITHUB_WORKSPACE, 'trusted-action');
           const {stdout} = await promisify(execFile)('/usr/bin/git', ['-C', trusted, 'rev-parse', 'HEAD'],
@@ -85,7 +86,9 @@ jobs:
           const kind = actor === 'dependabot[bot]' && pr.user?.login === 'dependabot[bot]'
             ? 'dependabot' : actor === 'SamCT86' && pr.user?.login === 'SamCT86' ? 'same-repository' : null;
           if (!kind) fail('CANARY_ACTOR_INVALID');
-          const expectedPaths = kind === 'dependabot' ? ['package-lock.json', 'package.json'] : ['README.md'];
+          const candidateRun = kind === 'same-repository' && pr.head.ref === 'henry/human-summary-source-canary-20261021';
+          const expectedPaths = kind === 'dependabot' ? ['package-lock.json', 'package.json']
+            : candidateRun ? ['.github/workflows/trustpr.yml'] : ['README.md'];
           if (pr.changed_files !== expectedPaths.length) fail('EVENT_CHANGED_FILE_COUNT_INVALID');
           const identity = {
             schema: 'trustpr-public-consumer-event-v1', event_name: process.env.GITHUB_EVENT_NAME,
